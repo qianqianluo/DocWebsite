@@ -25,3 +25,55 @@ After downloading the archive it\'s simply matter of extracting it and copying c
 
    tar -xf tigase-acs-${version}.tar.gz
    cp -R tigase-acs-${version}/jars/ tigase-server/jars/
+
+3. Tigase ACS SM Configuration
+==============================
+
+In order to user Advanced Clustering Strategy, clustering mode first needs to be turned on:
+
+.. code-block:: bash
+
+   'cluster-mode' = true
+
+and then an ACS strategy needs to be enabled:
+
+.. code-block:: bash
+
+   'sess-man' {
+    strategy (class: tigase.server.cluster.strategy.OnlineUsersCachingStrategy) {}
+    }
+
+4. Supported components
+=======================
+
+4.1. Tigase Advanced Clustering Strategy for Multi User Chat (ACS-MUC)
+----------------------------------------------------------------------
+
+4.1.1. Overview
+^^^^^^^^^^^^^^^
+
+ACS for MUC allows seamless clustering of MUC rooms across Tigase XMPP server cluster installation. ACS for MUC is required for clustered MUC deployments. If offers various strategies to handle distribution of traffic and rooms across the cluster, which allows fine-tune configuration of the deployment to individual needs.
+
+4.1.2. Tigase ACS MUC Configuration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+In order to use ACS for MUC, main Advance Clustering Strategy is required. Once it\'s enabled, clustered version of MUC component will be selected by default during startup therefore it\'s not required to configure it explicitly (make sure no class is configured).
+
+.. code-block:: bash
+
+   muc () {}
+
+It\'s also possible to explicitly configure the class with the following configuration:
+
+.. code-block:: bash
+
+   muc (class: tigase.muc.cluster.MUCComponentClustered) {}
+
+With the above configuration default MUC clustering strategy will be used. In order to select different strategy you have to configure it\'s class in strategy bean within muc component bean:
+
+.. code-block:: bash
+
+   muc () {
+     strategy (class: tigase.muc.cluster.ShardingStrategy) {}
+   }
+
+
