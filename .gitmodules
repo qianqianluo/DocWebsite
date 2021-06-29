@@ -1,0 +1,4 @@
+[submodule "build/html"]
+	path = build/html
+	url = https://github.com/qianqianluo/DocWebsite.git
+	branch = gh-pages
